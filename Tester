@@ -1,2 +1,23 @@
-#Emanuel is a B.A.N
-#-Pratul
+create table Managers (
+	EmployeeID INT PRIMARY KEY,
+	Name VARCHAR(50),
+	Salary DECIMAL(8,2),
+	WorksAt INT,
+	StartDate DATE
+);
+insert into Managers (EmployeeID, Name, Salary, WorksAt, StartDate) values (431598814, 'Celene Wrotham', 213607.57, 87690, '2015-11-04');
+insert into Managers (EmployeeID, Name, Salary, WorksAt, StartDate) values (705634090, 'Salomone Whelpton', 391976.0, 38921, '2019-12-22');
+insert into Managers (EmployeeID, Name, Salary, WorksAt, StartDate) values (167150230, 'Queenie Basnall', 189481.66, 65007, '2016-09-29');
+insert into Managers (EmployeeID, Name, Salary, WorksAt, StartDate) values (683664825, 'Noell Brazier', 420223.18, 87049, '2016-04-29');
+insert into Managers (EmployeeID, Name, Salary, WorksAt, StartDate) values (144402250, 'Spence Clingan', 158937.97, 86014, '2022-04-03');
+
+create table Branch (
+	BranchID INT,
+	Location VARCHAR(50),
+	Manager INT NOT NULL REFERENCES Managers
+);
+insert into Branch (BranchID, Location, Manager) values (86014, 'Sugar', 144402250);
+insert into Branch (BranchID, Location, Manager) values (87049, 'Monica', 683664825);
+insert into Branch (BranchID, Location, Manager) values (65007, 'Kensington', 167150230);
+insert into Branch (BranchID, Location, Manager) values (38921, 'Meadow Valley', 705634090);
+insert into Branch (BranchID, Location, Manager) values (87690, 'Raven', 431598814);
