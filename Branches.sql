@@ -1,5 +1,5 @@
 create table Branches (
-	BranchID INT,
+	BranchID INT PRIMARY KEY,
 	Location VARCHAR(50),
 	Manager INT
 );
