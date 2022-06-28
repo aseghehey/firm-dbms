@@ -4,13 +4,13 @@ DBNAME="investment_firm"  # database name
 #DBPORT=3306      # database port
 DBHOST="localhost"  # database host
 DBUSER="root"  # database user
-DBPASS=""  # database password
+DBPASS="batmanpn"  # database password
 
 try:
     db= mdb.connect(DBHOST, DBUSER, DBPASS, DBNAME)
     print("Connected to database")
     cur = db.cursor()
-    cur.execute("SELECT * FROM client")
+    cur.execute("SELECT * FROM clients")
     print("Executed query")
     for row in cur.fetchall():
         print(row)
