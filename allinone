@@ -1,4 +1,3 @@
-
 create table Manager (
 	EID INT PRIMARY KEY,
 	Password VARCHAR(50),
@@ -7,6 +6,7 @@ create table Manager (
 	Salary DECIMAL(8,2),
 	StartDate DATE
 );
+
 insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123837, 'gc5NucBQ0yNo', 'Nowell', 'Bazire', 232764.81, '2018-01-28');
 insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123800, 'uQIZsieRXxS', 'Verna', 'Duckitt', 227969.48, '2019-05-08');
 insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123813, 'knAjMH0kzik', 'Lorraine', 'Heakey', 123470.18, '2018-10-21');
@@ -62,8 +62,9 @@ create table Clients (
 	CurrentAmount DECIMAL(8,2),
 	Address VARCHAR(50),
 	TelephoneNumber VARCHAR(50),
-	Broker INT NOT NULL REFERENCES Brokers
+	Broker INT NOT NULL REFERENCES Brokers, CONSTRAINT has_enough CHECK(InitialAmount > 10000)
 );
+
 
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100112, 'Reynolds', 'Hanfrey', 'LyyZxc', 637172.68, 815351.57, '6020 Chive Drive', '(326) 338-2704', 5123691);
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100160, 'Jocko', 'Quest', 'KxtvYP', 639618.67, 579190.0, '88 Rigney Center', '(135) 930-4791', 5123534);
@@ -171,7 +172,6 @@ insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, Cur
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100512, 'Filbert', 'Marien', 'jlk4ox4n7', 454635.28, 84566.87, '7367 Haas Pass', '(644) 143-4037', 5123678);
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100532, 'Ami', 'Kristiansen', 'AlFT2oXrVa', 33902.84, 92555.59, '52658 Sycamore Pass', '(644) 237-5023', 5123586);
 
-
 create table Investment (
 	IID INT PRIMARY KEY,
 	Type VARCHAR(50),
@@ -199,6 +199,7 @@ create table HasBought (
 	Price DECIMAL(7,2),
 	DateBought DATE,CONSTRAINT hasbought_pk PRIMARY KEY(ClientID,InvestmentID)
 );
+
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100224, 00054311203, 40625.46, '2022-01-10');
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100112, 00054311240, 47692.2, '2021-02-12');
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100251, 00054311299, 16534.7, '2021-04-17');
@@ -220,3 +221,5 @@ insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (210012
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100123, 00054311291, 38634.48, '2021-05-28');
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100250, 00054311299, 65431.65, '2021-09-01');
 
+CREATE VIEW CustomerView(FirstName, LastName, InitialAmount, CurrentAmount, Address, BrokerName) AS SELECT FirstName, LastName, InitialAmount, CurrentAmount, Address, last_name FROM Clients C, Brokers B WHERE C.Broker = B.EID;
+CREATE VIEW TopBrokers(BID, FirstName,LastName, BranchID, TotalEarnings) AS SELECT B.EID, B.first_name, B.last_name, Branch, SUM(CurrentAmount) FROM Brokers B, Clients C WHERE B.EID = C.Broker GROUP BY EID;
