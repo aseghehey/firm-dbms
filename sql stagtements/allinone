@@ -1,4 +1,4 @@
-create table Manager (
+create table IF NOT EXISTS Manager (
 	EID INT PRIMARY KEY,
 	Password VARCHAR(50),
 	first_name VARCHAR(50),
@@ -15,7 +15,7 @@ insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) va
 insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123889, 'rjZC5a', 'Sosanna', 'Lindblad', 116989.04, '2018-06-03');
 
 
-create table Branches (
+create table IF NOT EXISTS Branches (
 	BranchID INT PRIMARY KEY,
 	Location VARCHAR(50),
 	Manager INT NOT NULL REFERENCES Manager
@@ -27,7 +27,7 @@ insert into Branches (BranchID, Location, Manager) values (495, '0 Jenna Court',
 insert into Branches (BranchID, Location, Manager) values (424, '225 Commercial Alley', 5123886);
 insert into Branches (BranchID, Location, Manager) values (457, '8686 Shelley Way', 5123837);
 
-create table Brokers (
+create table IF NOT EXISTS Brokers (
 	EID INT PRIMARY KEY,
 	first_name VARCHAR(50),
 	last_name VARCHAR(50),
@@ -53,7 +53,7 @@ insert into Brokers (EID, first_name, last_name, Password, StartDate, Salary, Br
 insert into Brokers (EID, first_name, last_name, Password, StartDate, Salary, Branch) values (5123668, 'Alana', 'Gerdts', '3VaHHdx', '2020-07-28', 18291.41, 837);
 
 
-create table Clients (
+create table IF NOT EXISTS Clients (
 	ClientID INT PRIMARY KEY,
 	FirstName VARCHAR(50),
 	LastName VARCHAR(50),
@@ -64,7 +64,6 @@ create table Clients (
 	TelephoneNumber VARCHAR(50),
 	Broker INT NOT NULL REFERENCES Brokers, CONSTRAINT has_enough CHECK(InitialAmount > 10000)
 );
-
 
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100112, 'Reynolds', 'Hanfrey', 'LyyZxc', 637172.68, 815351.57, '6020 Chive Drive', '(326) 338-2704', 5123691);
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100160, 'Jocko', 'Quest', 'KxtvYP', 639618.67, 579190.0, '88 Rigney Center', '(135) 930-4791', 5123534);
@@ -172,7 +171,7 @@ insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, Cur
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100512, 'Filbert', 'Marien', 'jlk4ox4n7', 454635.28, 84566.87, '7367 Haas Pass', '(644) 143-4037', 5123678);
 insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values (2100532, 'Ami', 'Kristiansen', 'AlFT2oXrVa', 33902.84, 92555.59, '52658 Sycamore Pass', '(644) 237-5023', 5123586);
 
-create table Investment (
+create table IF NOT EXISTS Investment (
 	IID INT PRIMARY KEY,
 	Type VARCHAR(50),
 	Name VARCHAR(50),
@@ -193,12 +192,25 @@ insert into Investment (IID, Type, Name, Risk_Assessment) values (00054311280, '
 insert into Investment (IID, Type, Name, Risk_Assessment) values (00054311013, 'Medical Specialities', 'pHarmA', 8);
 insert into Investment (IID, Type, Name, Risk_Assessment) values (00054311694, 'Cryptocurrency', 'Coinbase', 87);
 
-create table HasBought (
+create table IF NOT EXISTS HasBought (
 	ClientID INT NOT NULL REFERENCES Clients,
 	InvestmentID INT NOT NULL REFERENCES Investment,
 	Price DECIMAL(7,2),
 	DateBought DATE,CONSTRAINT hasbought_pk PRIMARY KEY(ClientID,InvestmentID)
 );
+
+DELIMITER $$
+CREATE TRIGGER must_be_positive
+BEFORE INSERT ON HasBought FOR EACH ROW
+BEGIN
+	IF NEW.Price < 0
+	THEN
+		SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = "Must be positive amount!";
+	END IF;
+END;
+$$
+DELIMITER ;
 
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100224, 00054311203, 40625.46, '2022-01-10');
 insert into HasBought (ClientID, InvestmentID, Price, DateBought) values (2100112, 00054311240, 47692.2, '2021-02-12');

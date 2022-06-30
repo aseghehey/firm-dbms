@@ -1,4 +1,4 @@
-create table Manager (
+create table IF NOT EXISTS Manager (
 	EID INT PRIMARY KEY,
 	Password VARCHAR(50),
 	first_name VARCHAR(50),
