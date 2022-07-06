@@ -1,0 +1,34 @@
+{% extends 'base.html' %}{% block title%}{{title}}{% endblock %}
+{% block content %}
+<div class="container">
+    <br></br>
+    <h1>Login to Beyond Brokerage</h1>
+    <br></br>
+    {% if err %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> {{err}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endif %}
+
+    <form action='/login' method="POST">
+        <div class="form-group">
+        <label for="exampleInputEmail1">User ID</label>
+        <input type="text" class="form-control" id="userid" aria-describedby="emailHelp" placeholder="Enter ID">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your ID with anyone else.</small>
+        </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check this box to agree with our terms and conditions</label>
+        </div>
+        </br>
+        <button type="submit" class="btn btn-secondary">Login</button>
+    </form>
+</div>
+{% endblock %}
