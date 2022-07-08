@@ -1,0 +1,31 @@
+{% extends 'base.html' %}{% block title%}{{title}}{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Add Investment</h1>
+    <form>
+        <div class="form-group">
+          <label for="invID">Investment ID</label>
+          <input type="text" class="form-control" id="invID" aria-describedby="invID" placeholder="Enter Investment ID">
+        </div>
+        <div class="form-group">
+          <label for="invType">Type of Investment</label>
+          <input type="text" class="form-control" id="invType" placeholder="Type">
+        </div>
+        <div class="form-group">
+            <label for="invName">Name of Investment</label>
+            <input type="text" class="form-control" id="invName" placeholder="Name">
+        </div>
+        <div class="form-group">
+        <label for="invRA">Risk Assessment of Investment</label>
+        <input type="text" class="form-control" id="invRA" placeholder="Risk Assessment">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Confirm</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+
+
+{% endblock %}

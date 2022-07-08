@@ -7,12 +7,12 @@ create table IF NOT EXISTS Manager (
 	StartDate DATE
 );
 
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123837, 'gc5NucBQ0yNo', 'Nowell', 'Bazire', 232764.81, '2018-01-28');
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123800, 'uQIZsieRXxS', 'Verna', 'Duckitt', 227969.48, '2019-05-08');
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123813, 'knAjMH0kzik', 'Lorraine', 'Heakey', 123470.18, '2018-10-21');
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123882, 'SHGvBuPlEF', 'Mandy', 'Frankling', 83432.91, '2018-08-11');
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123886, 'PQfr5qS', 'Randi', 'Hulland', 240553.36, '2019-04-02');
-insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (5123889, 'rjZC5a', 'Sosanna', 'Lindblad', 116989.04, '2018-06-03');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444837, 'gc5NucBQ0yNo', 'Nowell', 'Bazire', 232764.81, '2018-01-28');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444800, 'uQIZsieRXxS', 'Verna', 'Duckitt', 227969.48, '2019-05-08');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444813, 'knAjMH0kzik', 'Lorraine', 'Heakey', 123470.18, '2018-10-21');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444882, 'SHGvBuPlEF', 'Mandy', 'Frankling', 83432.91, '2018-08-11');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444886, 'PQfr5qS', 'Randi', 'Hulland', 240553.36, '2019-04-02');
+insert into Manager (EID, Password, first_name, last_name, Salary, StartDate) values (4444889, 'rjZC5a', 'Sosanna', 'Lindblad', 116989.04, '2018-06-03');
 
 
 create table IF NOT EXISTS Branches (
