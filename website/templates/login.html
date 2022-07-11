@@ -6,11 +6,13 @@
     <br></br>
     <div class="login"> 
     <form action='/login' method="POST">
-        {% if invalid %}
-				<div class="alert alert-danger" role="alert">
-          {{ msg }}
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-danger" role="alert">
+          {{ messages[0] }}
         </div>
-        {% endif %}
+      {% endif %}
+      {% endwith %}
         <div class="form-group">
         <label for="userid">User ID</label>
         <input type="text" class="form-control" name="userid" id="userid" aria-describedby="userid" placeholder="Enter ID" required>

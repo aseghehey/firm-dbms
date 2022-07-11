@@ -1,7 +1,7 @@
 from crypt import methods
 import pwd
 from django.shortcuts import render
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 import sqlalchemy
 from emanconnection import * 
 import os 
@@ -36,17 +36,15 @@ def login():
     msg=''
     option=0
     invalid=False
-    id = request.form.get('userid')
-    password = request.form.get('password')
     cursor,connection=connectToDB()
     if request.method=='POST' and 'userid' in request.form and 'password' in request.form:
         mID = request.form.get('userid')
         pw = request.form.get('password')
-        if "4444" in str(mID): #Broker
-            cursor.execute(f"SELECT * FROM Brokers WHERE EID={mID};")
-            option=1
-        elif "5123" in str(mID): # Manager
+        if "4444" in str(mID): #Manager
             cursor.execute(f"SELECT * FROM Manager WHERE EID={mID};")
+            option=1
+        elif "5123" in str(mID): # Broker
+            cursor.execute(f"SELECT * FROM Brokers WHERE EID={mID};")
             option=2
         else: # Client
             cursor.execute(f"SELECT * FROM Clients WHERE ClientID={mID};")
@@ -55,23 +53,34 @@ def login():
         if acc:
             session['loggedin']=True
             session['id'] = mID
-            if option==2:
+            if option==1:
                 if str(acc[1]) == str(pw):
                     session['name'] = 'manager'
                     return redirect(url_for('manager'))
                 else:
-                    invalid=True
-                    msg='Invalid Password or ID'
-            elif option==1:
-                session['name'] = 'broker'
-                pass
+                    # invalid=True
+                    flash('Invalid Password or ID')
+                    return redirect(url_for('login'))
+            elif option==2:
+                if str(acc[3] == str(pw)):
+                    session['name'] = 'broker'
+                    return redirect(url_for('broker'))
+                else:
+                    flash('Invalid Password or ID')
+                    return redirect(url_for('login'))
             elif option==3:
-                session['name'] = 'client'
-                pass
+                if str(acc[3] == str(pw)):
+                    session['name'] = 'client'
+                    return redirect(url_for('client'))
+                else:
+                    # invalid=True
+                    flash('Invalid Password or ID')
+                    return redirect(url_for('login'))
         else:
-            msg+='\nunsuccessful'
+            flash('Unsucessful. Verify your details.')
+            return redirect(url_for('login'))
 
-    return render_template('login.html', title="Login",msg=msg,invalid=invalid)
+    return render_template('login.html', title="Login")
 
 @app.route('/logout')
 def logout():
@@ -94,22 +103,46 @@ def manager():
 def managebroker():
     return render_template('brokerformanager.html')
 
-@app.route('/investment')
+@app.route('/investment', methods=['GET','POST'])
 def investment():
     cursor, connection = connectToDB()
     cursor.execute("SELECT * FROM Investment;")
     data = []
     for vals in cursor.fetchall():
         data.append({"invID":vals[0],"invType":vals[1],"invName":vals[2],"invRA":vals[-1]})
+
+    if request.method=='POST':
+        pass
+
     return render_template('inv.html',title="Investment", data=data)
 
-@app.route('/addinv')
+@app.route('/addinv',methods=['GET','POST'])
 def addinv():
+    cursor,connection=connectToDB()
+    #  and {'invID','invType','invName','invRA'} in request.form
+    if request.method=='POST':
+        IID = request.form.get('invID')
+        Type = request.form.get('invType')
+        Name = request.form.get('invName')
+        RA = request.form.get('invRA')
+        addInvestment(cursor,connection, IID,Type,Name,RA)
+        return redirect(url_for('investment'))
     return render_template('addinv.html')
 
 @app.route('/broker')
 def broker():
     return render_template('broker.html',title="Broker")
+
+@app.route('/client')
+def client():
+    cursor, connection = connectToDB()
+    data = displayInvestmentsByClientID(cursor, connection, session['id'])
+    vals = []
+    if len(data) >= 1:
+        for d in data:
+            vals.append({'invName': d[0], 'invType':d[1], 'price':d[2],'date':d[3]})
+    return render_template('client.html',title="Client",vals=vals)
+
 
 if __name__ == "__main__":
     app.run(port='8080', debug=True)

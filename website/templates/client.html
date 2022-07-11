@@ -1,0 +1,24 @@
+{% extends 'base.html' %}{% block title%}{{title}}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1>Client page</h1>
+    <h2>Current Transactions</h2>
+    {% for v in vals%}
+    <div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h4 class="card-title">{{v.invName}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{v.invType}}</h6>
+        <h5 class="card-subtitle mb-2">Price: {{v.price}}</h5>
+        <h5 class="card-subtitle mb-2">Date:{{v.date}}</h5>
+    </div>
+    </div>
+
+    {% endfor %}
+
+    {% if not vals %}
+    <div class="alert alert-warning" role="alert">
+        No transactions to display. Go to <a href="{{url_for('investment')}}">Investments</a> to make a purchase
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

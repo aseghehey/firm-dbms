@@ -50,12 +50,12 @@
               {% endif %}
               {% if 'client' == session.name%}
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('manager') }}">Client</a>
+                <a class="nav-link" href="{{ url_for('client') }}">Client</a>
             </li>
               {% endif %}
               {% if 'broker' == session.name%}
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('manager') }}">Broker</a>
+                <a class="nav-link" href="{{ url_for('broker') }}">Broker</a>
             </li>
               {% endif %}
             <li class="nav-item">
@@ -64,8 +64,6 @@
 
             {% endif %}
 
-            
-  
           </ul>
         </div>
       </nav>

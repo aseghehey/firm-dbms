@@ -2,28 +2,30 @@
 {% block content %}
 <div class="container">
     <h1>Add Investment</h1>
-    <form>
+    <form method="POST">
         <div class="form-group">
           <label for="invID">Investment ID</label>
-          <input type="text" class="form-control" id="invID" aria-describedby="invID" placeholder="Enter Investment ID">
+          <input type="text" name="invID" class="form-control" id="invID" aria-describedby="invID" placeholder="Enter Investment ID" required>
         </div>
         <div class="form-group">
           <label for="invType">Type of Investment</label>
-          <input type="text" class="form-control" id="invType" placeholder="Type">
+          <input type="text" name="invType" class="form-control" id="invType" placeholder="Type" required>
         </div>
         <div class="form-group">
             <label for="invName">Name of Investment</label>
-            <input type="text" class="form-control" id="invName" placeholder="Name">
+            <input type="text" name="invName" class="form-control" id="invName" placeholder="Name" required>
         </div>
         <div class="form-group">
         <label for="invRA">Risk Assessment of Investment</label>
-        <input type="text" class="form-control" id="invRA" placeholder="Risk Assessment">
+        <input type="text" name="invRA" class="form-control" id="invRA" placeholder="Risk Assessment" required>
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Confirm</label>
+          <label class="form-check-label" for="exampleCheck1" required>Confirm changes</label>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <form action="{{url_for('investment')}}" method="post">
+        <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+        </form>
       </form>
 </div>
 

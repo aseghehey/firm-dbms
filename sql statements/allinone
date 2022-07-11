@@ -20,12 +20,12 @@ create table IF NOT EXISTS Branches (
 	Location VARCHAR(50),
 	Manager INT NOT NULL REFERENCES Manager
 );
-insert into Branches (BranchID, Location, Manager) values (458, '0 Debra Avenue', 5123889);
-insert into Branches (BranchID, Location, Manager) values (465, '292 Longview Trail', 5123800);
-insert into Branches (BranchID, Location, Manager) values (416, '8 Carioca Junction', 5123882);
-insert into Branches (BranchID, Location, Manager) values (495, '0 Jenna Court', 5123813);
-insert into Branches (BranchID, Location, Manager) values (424, '225 Commercial Alley', 5123886);
-insert into Branches (BranchID, Location, Manager) values (457, '8686 Shelley Way', 5123837);
+insert into Branches (BranchID, Location, Manager) values (458, '0 Debra Avenue', 4444889);
+insert into Branches (BranchID, Location, Manager) values (465, '292 Longview Trail', 4444800);
+insert into Branches (BranchID, Location, Manager) values (416, '8 Carioca Junction', 4444882);
+insert into Branches (BranchID, Location, Manager) values (495, '0 Jenna Court', 4444813);
+insert into Branches (BranchID, Location, Manager) values (424, '225 Commercial Alley', 4444886);
+insert into Branches (BranchID, Location, Manager) values (457, '8686 Shelley Way', 4444837);
 
 create table IF NOT EXISTS Brokers (
 	EID INT PRIMARY KEY,

@@ -14,6 +14,15 @@ def connectToDB():
     # cursor.execute("SELECT * FROM Clients;")
     # print(cursor.fetchall())
 
+def displayInvestmentsByClientID(cursor, connection, CID):
+    cursor.execute(f'SELECT I.Name, I.Type, H.Price, H.DateBought FROM hasbought H, Investment I WHERE H.InvestmentID = I.IID AND H.ClientID = {CID};')
+    return cursor.fetchall()
+
+def addInvestment(cursor,connection, IID,Type,Name,Risk_Assessment):
+    cursor.execute(f"insert into Investment (IID, Type, Name, Risk_Assessment) values ({IID}, '{Type}', '{Name}', {Risk_Assessment});")
+    connection.commit()
+    # cursor.close()
+
 def displayLocations(cursor,connection):
     cursor.execute("SELECT Location FROM Branches;")
     return cursor.fetchall()
