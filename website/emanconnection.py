@@ -14,6 +14,14 @@ def connectToDB():
     # cursor.execute("SELECT * FROM Clients;")
     # print(cursor.fetchall())
 
+def clientProfile(cursor, connection, fullname):
+    cursor.execute(f"select InitialAmount, CurrentAmount, Address,BrokerName from customerview WHERE CONCAT(FirstName, ' ', LastName) = '{fullname}';")
+    return cursor.fetchone()
+
+def displayTopBrokers(cursor, connection):
+    cursor.execute("SELECT FirstName, LastName, TotalEarnings FROM topbrokers;")
+    return cursor.fetchall()
+
 def displayInvestmentsByClientID(cursor, connection, CID):
     cursor.execute(f'SELECT I.Name, I.Type, H.Price, H.DateBought FROM hasbought H, Investment I WHERE H.InvestmentID = I.IID AND H.ClientID = {CID};')
     return cursor.fetchall()
@@ -87,11 +95,6 @@ def displayBrokers(cursor,connection,ID):
     cursor.execute(f"SELECT * FROM Brokers WHERE Branch={ID};")
     res = cursor.fetchall()
     return res
-
-# def displayTopBroker(cursor, connection,ID):
-#     cursor.execute(f"SELECT * FROM topbrokers WHERE BranchID = {ID};")
-#     res = cursor.fetchall()
-#     return res
 
 def displayBranchByManager(cursor,connection,MID):
     cursor.execute(f"SELECT BranchID FROM Branches WHERE Manager={MID};")

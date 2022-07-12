@@ -29,7 +29,12 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template('about.html',title="About Us")
+    cursor, connection = connectToDB()
+    res = displayTopBrokers(cursor,connection)
+    data = []
+    for vals in res:
+        data.append({'fname': vals[0], 'lname': vals[1], 'totalearnings': vals[2]})
+    return render_template('about.html',title="About Us",data=data)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -153,8 +158,9 @@ def client():
     if len(data) >= 1:
         for d in data:
             vals.append({'invName': d[0], 'invType':d[1], 'price':d[2],'date':d[3]})
-    return render_template('client.html',title="Client",vals=vals)
+    data2 = clientProfile(cursor,connection,session['username'])
 
+    return render_template('client.html',title="Client",vals=vals,profile=data2)
 
 if __name__ == "__main__":
     app.run(port='8080', debug=True)
