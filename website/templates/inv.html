@@ -8,7 +8,7 @@
 <div class="container">
   {% if 'manager' in session.name %}
   <br></br>
-  <a href="{{url_for('addinv')}}" type="button" class="btn btn-primary btn-lg btn-block">Add an Investment</a>
+  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-primary btn-lg btn-block">Add an Investment</a>
   <br></br>
   {% endif %}
 
@@ -16,18 +16,18 @@
         {% for inv in data%}
         <div class="card" style="width: 18rem;">
             <div class="card-body">
-              <h4 class="card-title" name="invName">{{ inv.invName }}</h4>
-              <h5 class="card-subtitle mb-2 text-muted">{{ inv.invType }}</h5>
-              <h6 class="card-text"> Investment ID: {{ inv.invID }}</h6>
-              <h6 class="card-text"> Risk Assessment: {{ inv.invRA }}</h6>
+              <h4 class="card-title" name="iName">{{ inv.invName }}</h4>
+              <h5 class="card-subtitle mb-2 text-muted" name="iType">{{ inv.invType }}</h5>
+              <h6 class="card-text" name="iID"> Investment ID: {{ inv.invID }}</h6>
+              <h6 class="card-text" name="iRA"> Risk Assessment: {{ inv.invRA }}</h6>
               {% if 'manager' in session.name %}
               <form method="POST">
-                <button type="submit" name="remove" class="btn btn-danger">Remove Investment</a>
+                <button type="submit" name="submitbtn" class="btn btn-danger" value="remove">Remove Investment</button>
               </form> 
               {% endif %}
               {% if 'client' in session.name %}
               <form method="POST">
-                <button type="submit" name="buyinv" class="btn btn-primary">Buy investment</a>
+                <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success" value="purchase">Make Investment</a>
               </form> 
               {% endif %}
 

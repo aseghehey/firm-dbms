@@ -21,7 +21,7 @@ def home():
     data = []
     for vals in res:
         data.append({"location":vals[0]})
-    title = 'Investment Bank'
+    title = 'Beyond Brokerage'
     logged=False
     if 'loggedin' in session:
         logged=True
@@ -56,14 +56,15 @@ def login():
             if option==1:
                 if str(acc[1]) == str(pw):
                     session['name'] = 'manager'
+                    session['username'] = (str(acc[2]) + ' ' + str(acc[3]))
                     return redirect(url_for('manager'))
                 else:
-                    # invalid=True
                     flash('Invalid Password or ID')
                     return redirect(url_for('login'))
             elif option==2:
                 if str(acc[3] == str(pw)):
                     session['name'] = 'broker'
+                    session['username'] = (str(acc[1]) + ' ' + str(acc[2]))
                     return redirect(url_for('broker'))
                 else:
                     flash('Invalid Password or ID')
@@ -71,9 +72,9 @@ def login():
             elif option==3:
                 if str(acc[3] == str(pw)):
                     session['name'] = 'client'
+                    session['username'] = (str(acc[1]) + ' ' + str(acc[2]))
                     return redirect(url_for('client'))
                 else:
-                    # invalid=True
                     flash('Invalid Password or ID')
                     return redirect(url_for('login'))
         else:
@@ -97,7 +98,7 @@ def manager():
     cursor,connection = connectToDB()
     name=displayName(cursor,connection,session['id'],'manager')
     branch=displayBranchByManager(cursor,connection,session['id'])
-    return render_template('manager.html',title="Manager",name=name,branch=branch)
+    return render_template('manager.html',title="Manager",branch=branch)
 
 @app.route('/brokersmanage')
 def managebroker():
@@ -118,22 +119,27 @@ def investment():
         data.append({"invID":vals[0],"invType":vals[1],"invName":vals[2],"invRA":vals[-1]})
 
     if request.method=='POST':
-        pass
+        if request.form['submitbtn'] == 'remove':
+            print('remove toggled')
+        elif request.form['submitbtn'] == 'purchase': # for client
+            pass
 
     return render_template('inv.html',title="Investment", data=data)
 
-@app.route('/addinv',methods=['GET','POST'])
-def addinv():
+@app.route('/invchanges',methods=['GET','POST'])
+def invchanges():
     cursor,connection=connectToDB()
     #  and {'invID','invType','invName','invRA'} in request.form
-    if request.method=='POST':
+    if request.method=='POST' and (session['name'] == 'manager'):
         IID = request.form.get('invID')
         Type = request.form.get('invType')
         Name = request.form.get('invName')
         RA = request.form.get('invRA')
         addInvestment(cursor,connection, IID,Type,Name,RA)
         return redirect(url_for('investment'))
-    return render_template('addinv.html')
+    else:
+        pass
+    return render_template('invchanges.html')
 
 @app.route('/broker')
 def broker():

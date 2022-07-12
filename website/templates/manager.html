@@ -2,14 +2,14 @@
 {% block content %}
 
 <div class="container">
-    <h1>Welcome {{name}}</h1>
+    <h1>Welcome {{session.username}}</h1>
     </br>
     <h3>Actions:</h3>
     </br>
     <div class="btn-group-lg" role="group">
         <a class="btn btn-outline-primary" type="submit" href="{{ url_for('managebroker') }}" role="button">View/Edit brokers</a>
         <a class="btn btn-outline-primary" type="submit" href="#" role="button">View Notifications</a>
-        <a class="btn btn-outline-primary" type="submit" href="{{ url_for('addinv') }}" role="button">Add Investments</a>
+        <a class="btn btn-outline-primary" type="submit" href="{{ url_for('invchanges') }}" role="button">Add Investments</a>
     </div>
     <br></br>
     <h2>Total Profit for your branch:</h2>
