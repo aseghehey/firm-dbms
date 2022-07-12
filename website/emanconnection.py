@@ -88,6 +88,12 @@ def displayBrokers(cursor,connection,ID):
     res = cursor.fetchall()
     return res
 
+# def displayTopBroker(cursor, connection,ID):
+#     cursor.execute(f"SELECT * FROM topbrokers WHERE BranchID = {ID};")
+#     res = cursor.fetchall()
+#     return res
+
 def displayBranchByManager(cursor,connection,MID):
-    cursor.execute(f"SELECT * FROM Branches WHERE Manager={MID};")
-    return cursor.fetchone()[1]
+    cursor.execute(f"SELECT BranchID FROM Branches WHERE Manager={MID};")
+    return cursor.fetchone()[0]
+

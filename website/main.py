@@ -101,7 +101,13 @@ def manager():
 
 @app.route('/brokersmanage')
 def managebroker():
-    return render_template('brokerformanager.html')
+    cursor,connection = connectToDB()
+    res = displayBranchByManager(cursor,connection,session['id'])
+    res2 = displayBrokers(cursor, connection, res)
+    data = []
+    for d in res2:
+        data.append({'fname': d[1], 'lname':d[2], 'startdate':d[4], 'salary': d[5]})
+    return render_template('brokerformanager.html', data=data)
 
 @app.route('/investment', methods=['GET','POST'])
 def investment():

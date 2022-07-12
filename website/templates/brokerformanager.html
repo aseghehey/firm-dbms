@@ -2,8 +2,23 @@
 {% block content %}
 
 
-<div>
-    <h1>Manage Broker</h1>
+<div class="container-fluid">
+    <h1>Brokers in your branch</h1>
+    {% for d in data%}
+        <div class="card-header">
+          Manage broker
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">{{d.fname}} {{ d.lname }}</h4>
+          <p class="card-text">Started on: {{d.startdate}} - {{d.salary}}</p>
+          <a href="#" class="btn btn-danger">Fire</a>
+          <a href="#" class="btn btn-success">Update Salary</a>
+        </div>
+      </div>
+    {% endfor %}
+    <div class="container">
+    <a href="#" class="btn btn-success btn-lg btn-block">Add broker</a>
+    </div>
 </div>
 
 {% endblock %}
