@@ -22,6 +22,17 @@ def displayTopBrokers(cursor, connection):
     cursor.execute("SELECT FirstName, LastName, TotalEarnings FROM topbrokers;")
     return cursor.fetchall()
 
+def PriceFinder(cursor, connection, Type, Name):
+    cursor.execute(f"select Price from Investment where investment.Type= '{Type}' and investment.Name= '{Name}';")
+    return cursor.fetchone()
+
+def ClientBalance(cursor, connection, ClientID):
+    cursor.execute(f"select currentAmount from Clients where clientID= '{ClientID}';")
+    return cursor.fetchone()
+
+def canAfford(askingprice, balance):
+    return askingprice < balance
+
 def displayInvestmentsByClientID(cursor, connection, CID):
     cursor.execute(f'SELECT I.Name, I.Type, H.Price, H.DateBought, H.Quantity FROM hasbought H, Investment I WHERE H.InvestmentID = I.IID AND H.ClientID = {CID};')
     return cursor.fetchall()
@@ -30,6 +41,18 @@ def addInvestment(cursor,connection, IID,Type,Name,Risk_Assessment):
     cursor.execute(f"insert into Investment (IID, Type, Name, Risk_Assessment) values ({IID}, '{Type}', '{Name}', {Risk_Assessment});")
     connection.commit()
     # cursor.close()
+
+def IIDfinder(cursor, connection, Type, Name):
+    cursor.execute(f"select IID from Investment where investment.Type= '{Type}' and investment.Name= '{Name}';")
+    return cursor.fetchone()
+
+def updateBalance(cursor, connection, newbalance, id):
+    cursor.execute(f'update clients set currentAmount ={newbalance}  where clientid ={id}')
+    connection.commit()
+
+def addHasBought(cursor,connection, CID, IID, price, qty, date):
+    cursor.execute(f"insert into HasBought (ClientID, InvestmentID, Price, DateBought, Quantity) values ({CID}, {IID}, {price}, '{date}', {qty});")
+    connection.commit()
 
 def displayLocations(cursor,connection):
     cursor.execute("SELECT Location FROM Branches;")
@@ -70,9 +93,6 @@ def deleteClient(cursor, connection,ID):
 def displayInvestments(cursor, connection):
     cursor.execute("SELECT Type, Name, Risk_Assessment FROM Investment;")
     return cursor.fetchall()
-
-# test = cursor.execute(f"SELECT * FROM Manager WHERE EID={9876789}")
-# print(test)
 
 def findID(cursor, connection,ID,option):
     if option=="client":

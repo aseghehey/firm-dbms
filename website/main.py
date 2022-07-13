@@ -1,5 +1,6 @@
 from crypt import methods
 import pwd
+import re
 from django.shortcuts import render
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 import sqlalchemy
@@ -7,6 +8,8 @@ from emanconnection import *
 import os 
 from dotenv import load_dotenv
 import dotenv
+from datetime import date
+from decimal import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY']=os.getenv('secret_key')
@@ -142,8 +145,31 @@ def invchanges():
         RA = request.form.get('invRA')
         addInvestment(cursor,connection, IID,Type,Name,RA)
         return redirect(url_for('investment'))
-    else:
-        pass
+    elif request.method == 'POST' and (session['name'] == 'client'):
+        invType = request.form.get('buytype')
+        invName = request.form.get('buyname')
+        invQty = request.form.get('quantity')
+        # if PriceFinder(cursor,connection, invType, invName):
+        if (PriceFinder(cursor,connection, invType, invName)) is None:
+            flash('Could not find an investment with the given name and type')
+            return redirect(url_for('invchanges'))
+        else:
+            price = PriceFinder(cursor,connection, invType, invName)
+            totalprice = (int(price[-1])*int(invQty))
+            balance = ClientBalance(cursor, connection, session['id'])
+            if canAfford(totalprice, int(balance[-1])):
+                updatedbalance = int(balance[-1]) - totalprice
+                iid = IIDfinder(cursor, connection, invType,invName)
+                today = date.today()
+                date2add = today.strftime("%Y-%m-%d")
+                # print(iid[0], date2add, Decimal(updatedbalance), balance, totalprice)
+                addHasBought(cursor,connection,session['id'],iid[0],Decimal(totalprice),invQty,date2add)
+                updateBalance(cursor,connection,Decimal(updatedbalance),session['id'])
+                return redirect(url_for('client'))
+            else:
+                flash('We apologize but you have insufficient funds to make this purchase')
+                return redirect(url_for('invchanges'))
+
     return render_template('invchanges.html')
 
 @app.route('/broker')
