@@ -1,7 +1,7 @@
 create table IF NOT EXISTS HasBought (
 ClientID INT NOT NULL REFERENCES Clients,
 InvestmentID INT NOT NULL REFERENCES Investment,
-Price DECIMAL(7,2),
+Price DECIMAL(8,2),
 DateBought DATE, CONSTRAINT hasbought_pk PRIMARY KEY(ClientID,InvestmentID),
 Quantity INT
 );
