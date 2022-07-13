@@ -121,7 +121,7 @@ def investment():
     cursor.execute("SELECT * FROM Investment;")
     data = []
     for vals in cursor.fetchall():
-        data.append({"invID":vals[0],"invType":vals[1],"invName":vals[2],"invRA":vals[-1]})
+        data.append({"invID":vals[0],"invType":vals[1],"invName":vals[2],"invRA":vals[3],"price":vals[-1]})
 
     if request.method=='POST':
         if request.form['submitbtn'] == 'remove':
@@ -157,10 +157,10 @@ def client():
     vals = []
     if len(data) >= 1:
         for d in data:
-            vals.append({'invName': d[0], 'invType':d[1], 'price':d[2],'date':d[3]})
+            vals.append({'invName': d[0], 'invType':d[1], 'price':d[2], 'quantity': d[4],'date':d[3]})
     data2 = clientProfile(cursor,connection,session['username'])
-
-    return render_template('client.html',title="Client",vals=vals,profile=data2)
+    profile = {'profit': abs(data2[0]-data2[1]), 'balance': data2[1], 'address': data2[2], 'number': data2[3], 'broker': data2[-1]}
+    return render_template('client.html',title="Client",vals=vals,profile=profile)
 
 if __name__ == "__main__":
     app.run(port='8080', debug=True)

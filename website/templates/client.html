@@ -4,16 +4,27 @@
     <h1>Welcome {{ session.username }}</h1>
     <h2>Profile</h2>
 
-    <p>{{profile}}</p>
+    <div class="card">
+        <h4 class="card-header">Account details for {{session.username}}</h4>
+        <div class="card-body">
+          <h6 class="card-text">Account balance: {{profile.balance}}</h6>
+          <h6 class="card-text">Profit: {{profile.profit}}</h6>
+          <h6 class="card-text">Address: {{profile.address}}</h6>
+          <h6 class="card-text">Telephone Number: +1 {{profile.number}}</h6>
+          <h6 class="card-text">Broker: {{profile.broker}}</h6>
+        </div>
+      </div>
 
     <h2>Current Transactions</h2>
     {% for v in vals%}
     <div class="card" style="width: 18rem;">
     <div class="card-body">
         <h4 class="card-title">{{v.invName}}</h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{v.invType}}</h6>
-        <h5 class="card-subtitle mb-2">Price: {{v.price}}</h5>
-        <h5 class="card-subtitle mb-2">Date: {{v.date}}</h5>
+        <h6 class="card-text mb-2 text-muted">{{v.invType}}</h6>
+        <h6 class="card-text mb-2">Price: {{v.price}}</h5>
+        <h6 class="card-text mb-2">Quantity: {{v.quantity}}</h5>
+        <h6 class="card-text mb-2">Date: {{v.date}}</h5>
+        <button class="btn btn-success">Sell</button>
     </div>
     </div>
 

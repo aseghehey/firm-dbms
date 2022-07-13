@@ -15,7 +15,7 @@ def connectToDB():
     # print(cursor.fetchall())
 
 def clientProfile(cursor, connection, fullname):
-    cursor.execute(f"select InitialAmount, CurrentAmount, Address,BrokerName from customerview WHERE CONCAT(FirstName, ' ', LastName) = '{fullname}';")
+    cursor.execute(f"select InitialAmount, CurrentAmount, Address, TelephoneNumber, BrokerName from customerview WHERE CONCAT(FirstName, ' ', LastName) = '{fullname}';")
     return cursor.fetchone()
 
 def displayTopBrokers(cursor, connection):
@@ -23,7 +23,7 @@ def displayTopBrokers(cursor, connection):
     return cursor.fetchall()
 
 def displayInvestmentsByClientID(cursor, connection, CID):
-    cursor.execute(f'SELECT I.Name, I.Type, H.Price, H.DateBought FROM hasbought H, Investment I WHERE H.InvestmentID = I.IID AND H.ClientID = {CID};')
+    cursor.execute(f'SELECT I.Name, I.Type, H.Price, H.DateBought, H.Quantity FROM hasbought H, Investment I WHERE H.InvestmentID = I.IID AND H.ClientID = {CID};')
     return cursor.fetchall()
 
 def addInvestment(cursor,connection, IID,Type,Name,Risk_Assessment):

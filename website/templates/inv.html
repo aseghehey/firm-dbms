@@ -20,6 +20,7 @@
               <h5 class="card-subtitle mb-2 text-muted" name="iType">{{ inv.invType }}</h5>
               <h6 class="card-text" name="iID"> Investment ID: {{ inv.invID }}</h6>
               <h6 class="card-text" name="iRA"> Risk Assessment: {{ inv.invRA }}</h6>
+              <h6 class="card-text" name="iRA"> Current price: {{ inv.price }}</h6>
               {% if 'manager' in session.name %}
               <form method="POST">
                 <button type="submit" name="submitbtn" class="btn btn-danger" value="remove">Remove Investment</button>
