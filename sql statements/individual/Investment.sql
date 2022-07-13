@@ -3,7 +3,7 @@ create table IF NOT EXISTS Investment (
 	Type VARCHAR(50),
 	Name VARCHAR(50),
 	Risk_Assessment INT,
-    Price DECIMAL(6,2)
+    Price DECIMAL(7,2)
 );
 insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (00054311203, 'Medical Specialities', 'AET', 8, 6000.00);
 insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (00054311201, 'Railroads', 'RAIL', 33, 3500.00);
@@ -19,6 +19,7 @@ insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (0005431
 insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (00054311280, 'Computer Software: Programming, Data Processing', 'TUL', 15, 7624.00);
 insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (00054311013, 'Medical Specialities', 'pHarmA', 8, 640.00);
 insert into Investment (IID, Type, Name, Risk_Assessment, Price) values (00054311694, 'Cryptocurrency', 'Coinbase', 87, 15079.00);
+
 
 
 
