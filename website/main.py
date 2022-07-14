@@ -143,8 +143,18 @@ def invchanges():
         Type = request.form.get('invType')
         Name = request.form.get('invName')
         RA = request.form.get('invRA')
-        addInvestment(cursor,connection, IID,Type,Name,RA)
-        return redirect(url_for('investment'))
+        price2add = request.form.get('invPrice')
+        if (int(price2add) > 0) and (100 >= int(RA) >= 0) and str(IID).isdigit():
+            cursor.execute(f"select * from investment where type ='{Type}' AND Name='{Name}' OR IID={IID};")
+            if not cursor.fetchone():
+                addInvestment(cursor,connection, IID,Type,Name,RA,Decimal(price2add))
+                return redirect(url_for('investment'))
+            else:
+                flash('There already exists an investment with the given details')
+                return redirect(url_for('invchanges'))
+        else:
+            flash('Could not add Investment. Make sure it meets the following criteria: Price needs to be positive, Risk Assessment needs to be between 0 and 100 and Invesment ID needs to be an integer')
+            return redirect(url_for('invchanges'))
     elif request.method == 'POST' and (session['name'] == 'client'):
         invType = request.form.get('buytype')
         invName = request.form.get('buyname')

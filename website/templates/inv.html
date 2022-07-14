@@ -8,13 +8,17 @@
 
 <div class="container">
   {% if 'manager' in session.name %}
-  <br></br>
-  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-primary btn-lg btn-block">Add an Investment</a>
+  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-success btn-lg btn-block">Add an Investment</a>
   <hr></hr>
+  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-warning btn-lg btn-block">Modify an Investment</a>
+  <hr></hr>
+  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-danger btn-lg btn-block">Remove an Investment</a>
+  <hr></hr>
+
   {% endif %}
   {% if 'client' in session.name %}
   <form method="POST">
-    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Make an Investment</a>
+    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Buy or sell Investments</a>
   </form> 
   <hr></hr>
   {% endif %}
@@ -27,12 +31,7 @@
               <h5 class="card-subtitle mb-2 text-muted" name="iType">{{ inv.invType }}</h5>
               <h6 class="card-text" name="iID"> Investment ID: {{ inv.invID }}</h6>
               <h6 class="card-text" name="iRA"> Risk Assessment: {{ inv.invRA }}</h6>
-              <h6 class="card-text" name="iRA"> Current price: {{ inv.price }}</h6>
-              {% if 'manager' in session.name %}
-              <form method="POST">
-                <button type="submit" name="submitbtn" class="btn btn-danger" value="remove">Remove Investment</button>
-              </form> 
-              {% endif %}
+              <h6 class="card-text" name="iRA"> Current price: ${{ inv.price }}</h6>
             </div>
           </div>
 
