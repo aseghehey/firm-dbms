@@ -54,6 +54,21 @@ def addHasBought(cursor,connection, CID, IID, price, qty, date):
     cursor.execute(f"insert into HasBought (ClientID, InvestmentID, Price, DateBought, Quantity) values ({CID}, {IID}, {price}, '{date}', {qty});")
     connection.commit()
 
+def qtyByCIDandIID(cursor,CID,IID):
+    cursor.execute(f"Select Quantity from HasBought WHERE ClientID={CID} AND InvestmentID = {IID};")
+    return cursor.fetchone()[0]
+
+def ExistinHasB(cursor,connection,CID,IID):
+    cursor.execute(f"SELECT * from HasBought WHERE ClientID={CID} AND InvestmentID={IID};")
+    if cursor.fetchone() is not None:
+        return True
+    else:
+        return False
+
+def UpdateQuantity(cursor, connection, ClientID, InvestmentID, Quantity,price):
+    cursor.execute(f"UPDATE hasbought set quantity={Quantity},price={price} where ClientID = {ClientID} AND InvestmentID ={InvestmentID};")
+    connection.commit()
+
 def displayLocations(cursor,connection):
     cursor.execute("SELECT Location FROM Branches;")
     return cursor.fetchall()

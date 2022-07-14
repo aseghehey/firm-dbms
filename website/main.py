@@ -162,8 +162,15 @@ def invchanges():
                 iid = IIDfinder(cursor, connection, invType,invName)
                 today = date.today()
                 date2add = today.strftime("%Y-%m-%d")
-                # print(iid[0], date2add, Decimal(updatedbalance), balance, totalprice)
-                addHasBought(cursor,connection,session['id'],iid[0],Decimal(totalprice),invQty,date2add)
+                # print(iid, session['id'])              
+                if not ExistinHasB(cursor,connection,session['id'],iid[0]):
+                    addHasBought(cursor,connection,session['id'],iid[0],Decimal(totalprice),invQty,date2add)
+                else:
+                    curqty = qtyByCIDandIID(cursor, session['id'],iid[0])
+                    totalqty = int(curqty)+int(invQty)
+                    tp = int(price[-1])*totalqty
+                    UpdateQuantity(cursor,connection,session['id'],iid[0],totalqty,Decimal(tp))
+                
                 updateBalance(cursor,connection,Decimal(updatedbalance),session['id'])
                 return redirect(url_for('client'))
             else:

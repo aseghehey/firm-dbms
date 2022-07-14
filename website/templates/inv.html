@@ -4,17 +4,19 @@
 <div class="container bggr">
     <h1 class="display-6">Available Investments</h1>
 </div>
+<hr></hr>
 
 <div class="container">
   {% if 'manager' in session.name %}
   <br></br>
   <a href="{{url_for('invchanges')}}" type="button" class="btn btn-primary btn-lg btn-block">Add an Investment</a>
-  <br></br>
+  <hr></hr>
   {% endif %}
   {% if 'client' in session.name %}
   <form method="POST">
-    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Make Investment</a>
+    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Make an Investment</a>
   </form> 
+  <hr></hr>
   {% endif %}
 
     <div class="row">
