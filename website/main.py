@@ -1,6 +1,7 @@
 from crypt import methods
 import pwd
 import re
+from tkinter import E
 from django.shortcuts import render
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 import sqlalchemy
@@ -10,6 +11,7 @@ from dotenv import load_dotenv
 import dotenv
 from datetime import date
 from decimal import *
+from mysql.connector import Error
 from password_generator import PasswordGenerator
 
 app = Flask(__name__)
@@ -182,6 +184,22 @@ def invchanges():
             else:
                 flash('We apologize but you have insufficient funds to make this purchase')
                 return redirect(url_for('invchanges'))
+    elif request.method=='POST' and session['name'] == 'broker':
+        invPrice = request.form.get('invPrice')
+        invRA = request.form.get('invRA')
+        invID = request.form.get('invID')
+        invalidUpdate = False
+        if (100 >= int(invRA) >= 0) and str(invID).isdigit():
+            if updatePrice(cursor,connection,invID,Decimal(invPrice), invRA):
+                return redirect(url_for('investment'))
+            else:
+                invalidUpdate=True
+        else:
+            invalidUpdate = True
+        
+        if invalidUpdate:
+            flash('Could not modify price, make sure ID is correct and RA is between [0,100]')
+            return redirect(url_for('invchanges'))
 
     return render_template('invchanges.html')
 
@@ -201,14 +219,19 @@ def removeinv():
                 return redirect(url_for('removeinv'))
     return render_template('removeinv.html')
 
-@app.route('/broker')
+@app.route('/broker',methods=['GET','POST'])
 def broker():
-    return render_template('broker.html',title="Broker")
+    cursor, connection = connectToDB()
+    res = displayClients(cursor,session['id'])
+    data = []
+    for v in res:
+        data.append({'id': v[0],'name': v[1]+ ' ' + v[2], 'profit': v[5]-v[4], 'balance': v[5], 'add': v[6], 'number': v[7]})
+    return render_template('broker.html',title="Broker", data=data)
 
-@app.route('/addbroker', methods=['GET', 'POST'])
-def addbroker():
+@app.route('/add', methods=['GET', 'POST'])
+def add():
     cursor,connection = connectToDB()
-    if request.method=='POST':
+    if request.method=='POST' and session['name'] == 'manager':
         bID = request.form.get('brokerID')
         fn = request.form.get('brokerfn')
         ln = request.form.get('brokerln')
@@ -218,7 +241,7 @@ def addbroker():
             cursor.execute(f'select * from brokers where EID = {int(toAddbID)};')
             if cursor.fetchone():
                 flash('There already exists a broker with the given ID')
-                return redirect(url_for('addbroker'))
+                return redirect(url_for('add'))
             else:
                 today = date.today()
                 date2add = today.strftime("%Y-%m-%d")
@@ -228,13 +251,39 @@ def addbroker():
                 return redirect(url_for('manager'))
         else:
             flash('Broker ID needs to be an integer, salary cannot be negative and can only give last 3 numbers of Broker ID')
-            return redirect(url_for('addbroker'))
-    return render_template('add_user.html',title='Add a broker')
+            return redirect(url_for('add'))
+    elif request.method=='POST' and session['name'] == 'broker':
+        cid = request.form.get('clientID')
+        toAddID = '2100' + cid
+        fn = request.form.get('clientfn')
+        ln = request.form.get('clientln')
+        address = request.form.get('address')
+        number = request.form.get('number')
+        initial = request.form.get('initial')
+        invalid = False
+        if str(toAddID).isdigit() and (int(initial) > 0) and (len(cid) == 3):
+            cursor.execute(f"Select * from Clients where ClientID={int(toAddID)};")
+            if not cursor.fetchone():
+                pwo = 'jgvkgrb'
+                if AddClient(cursor,connection,int(toAddID),fn,ln,pwo,Decimal(initial),Decimal(initial),address,number,session['id']):
+                    return redirect(url_for('broker'))
+                else:
+                    invalid=True
+            else:
+                invalid = True
+        else:
+            invalid = True
 
-@app.route('/removebroker', methods=['GET', 'POST'])
-def removebroker():
+        if invalid:
+            flash('Error adding client. Make sure ClientID is unique, initial amount isn`t negative and is above 10k')
+            return redirect(url_for('add'))
+
+    return render_template('add_user.html',title='Add')
+
+@app.route('/remove', methods=['GET', 'POST'])
+def remove():
     cursor,connection = connectToDB()
-    if request.method == 'POST':
+    if request.method == 'POST' and session['name'] == 'manager':
         bID = request.form.get('brokerID')
         if str(bID).isdigit():
             cursor.execute(f'select * from brokers where EID = {int(bID)};')
@@ -243,10 +292,18 @@ def removebroker():
                 return redirect(url_for('manager'))
             else:
                 flash('Could not find a broker with the given ID')
-                return redirect(url_for('removebroker'))
+                return redirect(url_for('remove'))
         else:
             flash('Invalid BrokerID')
-            return redirect(url_for('removebroker'))
+            return redirect(url_for('remove'))
+    elif request.method == 'POST' and session['name'] == 'broker':
+        cID = request.form.get('clientID')
+        if str(cID).isdigit():
+            if deleteClient(cursor,connection,cID):
+                return redirect(url_for('broker'))
+            else:
+                flash('Could not find ID')
+                return redirect(url_for('remove'))
 
     return render_template('remove_user.html')
     # return render

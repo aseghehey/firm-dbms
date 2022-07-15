@@ -2,6 +2,31 @@
 {% block content %}
 <div class="container-fluid">
     <h1>Welcome {{session.username}}</h1>
+    <hr></hr>
+    {% if data %}
+    <h1>Client list</h1>
+        {% for d in data%}
+            <div class="card">
+                <h4 class="card-header">{{ d.name }}</h4>
+                <div class="card-body">
+                <h6 class="card-text">ID: {{d.id}}</h6>
+                <h6 class="card-text">Balance: ${{d.balance}}</h6>
+                <h6 class="card-text">Profit: ${{d.profit}}</h6>
+                <h6 class="card-text">Address: {{d.add}}</h6>
+                <h6 class="card-text">Telephone number: +1 {{d.number}}</h6>
+                </div>
+            </div>
+            <br></br>
+        {% endfor %}
+        <a href="{{url_for('remove')}}" type="button" class="btn btn-outline-danger btn-lg btn-block">Remove Client</a>
+        <hr></hr>
+        <a href="{{url_for('add')}}" type="button" name="btnbtn" value="add" class="btn btn-outline-success btn-lg btn-block">Add Client</a>
+        <hr></hr>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No clients avalable yet. You should consider <a href="{{url_for('add')}}">adding clients</a>
+      </div>
+    {% endif %}
 </div>
 
 {% endblock %}

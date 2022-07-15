@@ -41,9 +41,10 @@
         </form>
   </div>
 {% endif %}
+<div class="container-fluid">
+
 {% if 'client' in session.name %}
 
-<div class="container-fluid">
   <h1>Purchase or Sell Investment(s)</h1>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -75,9 +76,32 @@
       </br>
     </form>
 
-</div>
+{% elif 'broker' in session.name %}
+<h1>Update price</h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="invID">Investment ID</label>
+    <input type="text" name="invID" class="form-control" id="invID" aria-describedby="invID" placeholder="Enter Investment ID" required>
+  </div>
+  <div class="form-group">
+    <label for="invPrice">Updated price of Investment</label>
+    <input type="number" name="invPrice" class="form-control" id="invPrice" placeholder="Current Price" required>
+    </div>
+    <div class="form-group">
+      <label for="invRA">Risk Assessment of Investment</label>
+      <input type="number" name="invRA" class="form-control" id="invRA" placeholder="Risk Assessment" required>
+      </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1" required>Confirm changes</label>
+  </div>
+  <form action="{{url_for('investment')}}" method="post">
+  <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+  </form>
+</form>
 
 
 {% endif %}
+</div>
 
 {% endblock %}

@@ -25,7 +25,22 @@
             <button type="submit" class="btn btn-primary" value="submit">Submit</button>
         </form>
     </form>
-    
+{% else %}
+<h1>Remove Client</h1>
+<form method="POST">
+  <div class="form-group">
+    <label for="clientID">Client ID</label>
+    <input type="text" name="clientID" class="form-control" id="clientID" aria-describedby="clientID" placeholder="Client ID" required>
+  </div>
+  <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label" for="exampleCheck1" required>Confirm changes</label>
+    </div>
+  <form action="{{url_for('manager')}}" method="post">
+      <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+  </form>
+</form>
+
 {% endif %}
 </div>
 

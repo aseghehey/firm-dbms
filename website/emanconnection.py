@@ -91,19 +91,27 @@ def deleteBrokers(cursor, connection,ID):
 
 def AddClient(cursor, connection,ID, fname, lname, password, iamnt, camnt, address, number, broker):
     try:
-        cursor.execute(f"insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values ({ID}, {fname}, {lname}, {password},{iamnt}, {camnt}, {address}, {number}, {broker});")
+        cursor.execute(f"insert into Clients (ClientID, FirstName, LastName, Password, InitialAmount, CurrentAmount, Address, TelephoneNumber, Broker) values ({ID}, '{fname}', '{lname}', '{password}',{iamnt}, {camnt}, '{address}', '{number}', {broker});")
         connection.commit()
-        return "Added client with success"
-    except mysql.connector.Error as err:
-        return err
+        return True
+    except mysql.connector.Error:
+        return False
+
+def updatePrice(cursor,connection,ID,newprice,ra):
+    try:
+        cursor.execute(f"UPDATE Investment SET Price = {newprice}, Risk_Assessment= {ra} WHERE IID = {ID};")
+        connection.commit()
+        return True
+    except mysql.connector.Error:
+        return False
 
 def deleteClient(cursor, connection,ID):
     try:
         cursor.execute(f"DELETE FROM Clients WHERE ClientID={ID};")
         connection.commit()
-        return "Removed client successfully"
+        return True
     except mysql.connector.Error as err:
-        return err
+        return False
 
 def displayInvestments(cursor, connection):
     cursor.execute("SELECT Type, Name, Risk_Assessment FROM Investment;")
@@ -130,6 +138,10 @@ def displayBrokers(cursor,connection,ID):
     cursor.execute(f"SELECT * FROM Brokers WHERE Branch={ID};")
     res = cursor.fetchall()
     return res
+
+def displayClients(cursor, bID):
+    cursor.execute(f"Select * from Clients C WHERE C.Broker = {bID};")
+    return cursor.fetchall()
 
 def displayTopBrokersForManager(cursor,connection,branch):
     cursor.execute(f"SELECT CONCAT(first_name, ' ', last_name), TotalEarnings FROM Brokers B, topbrokers tp WHERE tp.BID=B.EID AND B.Branch= {branch};")
