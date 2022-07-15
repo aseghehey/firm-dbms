@@ -5,7 +5,7 @@ from tkinter import E
 from django.shortcuts import render
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 import sqlalchemy
-from emanconnection import * 
+from queries import * 
 import os 
 from dotenv import load_dotenv
 import dotenv
