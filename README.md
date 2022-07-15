@@ -23,9 +23,14 @@
 > ![Home](screenshots/regularview/Homepage.png)
 > ![Login](screenshots/Login.png)
 > ![Investment page](screenshots/regularview/InvPage.png)
+> Manager page
+> ![managerpage](screenshots/manager/Manager page.png)
+> ![addinv](screenshots/manager/add inv.png)
+> Client page
+> ![clientpage](screenshots/client/Client page.png)
+> Broker page
+> ![brokerpage](screenshots/broker/Broker main page.png)
 
-##### Manager page
-
-## Installation
+## Usability
 
 > Feel free to use the code with your own database. Our SQL statements to make and populate the database can be found here [Database](https://github.com/easeghehey/Firm-DBMS/blob/main/sql%20statements/allinone)
