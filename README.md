@@ -21,6 +21,7 @@
 
 ## Screenshots
 > ![Login](screenshots/Login.png)
+> ![Home](screenshots/Regular view/Homepage.png)
 
 ## Installation
 
