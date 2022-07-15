@@ -85,7 +85,6 @@ def DeleteHasBought(cursor,connection,CID, IID):
     except mysql.connector.Error:
         return False
 
-
 def UpdateQuantityNoPriceChange(cursor, connection, ClientID, InvestmentID, Quantity):
     try:
         cursor.execute(f"UPDATE hasbought set quantity={Quantity} where ClientID = {ClientID} AND InvestmentID ={InvestmentID};")

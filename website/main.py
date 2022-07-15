@@ -298,11 +298,20 @@ def sell():
                 curamnt = cursor.fetchone()[0]
                 newamnt = ((int(curprice) * int(qty)) + int(curamnt))
                 if (int(curqty) - int(qty) >= 1): # update
-                    if UpdateQuantityNoPriceChange(cursor,connection, session['id'],invID,(int(curqty) - int(qty))) and UpdateCurAmnt(cursor,connection,session['id'],Decimal(newamnt)):
-                        return redirect(url_for('client'))
+                    UpdateCurAmnt(cursor,connection, session['id'],Decimal(newamnt))
+                    UpdateQuantityNoPriceChange(cursor,connection, session['id'],invID,(int(curqty) - int(qty)))
+                    return redirect(url_for('client'))
+                    # if UpdateQuantityNoPriceChange(cursor,connection, session['id'],invID,(int(curqty) - int(qty))) and UpdateCurAmnt(cursor,connection,session['id'],Decimal(newamnt)):
+                    #     return redirect(url_for('client'))
+                    # else:
+                    #     invalidSell=True
+                    #     msg='failed1'
                 elif (int(curqty) - int(qty) == 0): # delete
                     if DeleteHasBought(cursor,connection,session['id'], invID) and UpdateCurAmnt(cursor,connection,session['id'],Decimal(newamnt)):
                         return redirect(url_for('client'))
+                    else:
+                        invalidSell=True
+                        msg='failed2'
                 else: # negative
                     invalidSell = True
                     msg='Invalid quantity. Make sure you input a quantity below or equal to how much you currently own'
