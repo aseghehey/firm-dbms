@@ -1,0 +1,33 @@
+{% extends 'base.html' %}{% block title%}{{title}}{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-danger" role="alert">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+  {% endwith %}
+{% if 'manager' in session.name %}
+
+    <h1>Remove broker</h1>
+    <form method="POST">
+        <div class="form-group">
+          <label for="brokerID">Broker ID</label>
+          <input type="text" name="brokerID" class="form-control" id="brokerID" aria-describedby="brokerID" placeholder="Broker ID" required>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1" required>Confirm changes</label>
+          </div>
+        <form action="{{url_for('manager')}}" method="post">
+            <button type="submit" class="btn btn-primary" value="submit">Submit</button>
+        </form>
+    </form>
+    
+{% endif %}
+</div>
+
+
+{% endblock %}

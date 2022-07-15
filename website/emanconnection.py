@@ -131,7 +131,31 @@ def displayBrokers(cursor,connection,ID):
     res = cursor.fetchall()
     return res
 
+def displayTopBrokersForManager(cursor,connection,branch):
+    cursor.execute(f"SELECT CONCAT(first_name, ' ', last_name), TotalEarnings FROM Brokers B, topbrokers tp WHERE tp.BID=B.EID AND B.Branch= {branch};")
+    return cursor.fetchall()
+
+
 def displayBranchByManager(cursor,connection,MID):
     cursor.execute(f"SELECT BranchID FROM Branches WHERE Manager={MID};")
     return cursor.fetchone()[0]
 
+def ProfitByBranch(cursor,connection,branch):
+    cursor.execute(f'SELECT SUM(CurrentAmount)-SUM(InitialAmount) FROM Brokers B, Clients C WHERE B.EID = C.Broker AND B.Branch={branch};')
+    return cursor.fetchone()[0]
+
+def InsertBrokers(cursor, connection, EID, first_name, last_name, Password, StartDate, Salary, Branch):
+    cursor.execute(f"insert into Brokers (EID, first_name, last_name, Password, StartDate, Salary, Branch) values ({EID}, '{first_name}', '{last_name}', '{Password}', '{StartDate}', {Salary}, {Branch});")
+    connection.commit()
+
+def UpdateBrokers(cursor, connection, EID, Salary):
+    cursor.execute(f"UPDATE Brokers SET Salary={Salary} where EID = {EID};")
+    connection.commit()
+
+def DeleteBroker(cursor, connection, EID):
+    cursor.execute(f"DELETE FROM brokers WHERE EID = {EID};")
+    connection.commit()
+  
+# def displayTopBrokersForManager(cursor,connection,branch):
+#     cursor.execute(f'SELECT CONCAT(first_name, ' ', last_name), TotalEarnings FROM Brokers B, topbrokers tp WHERE tp.BID=B.EID AND B.Branch={branch};')
+#     return cursor.fetchall()

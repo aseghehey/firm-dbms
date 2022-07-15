@@ -1,22 +1,33 @@
 {% extends 'base.html' %}{% block title%}{{title}}{% endblock %}
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
     <h1>Welcome {{session.username}}</h1>
-    </br>
-    <h3>Actions:</h3>
-    </br>
-    <div class="btn-group-lg" role="group">
-        <a class="btn btn-outline-primary" type="submit" href="{{ url_for('managebroker') }}" role="button">View/Edit brokers</a>
-        <a class="btn btn-outline-primary" type="submit" href="#" role="button">View Notifications</a>
-        <a class="btn btn-outline-primary" type="submit" href="{{ url_for('invchanges') }}" role="button">Add Investments</a>
-    </div>
-    <br></br>
+    <hr></hr>
     <h2>Total Profit for your branch:</h2>
-    <h3>__Figure__</h3>
-    <br></br>
-    <h2>Top Broker of your branch:</h2>
-    <h3>{{ branch }}</h3>
+    <h3>${{tp}}</h3>
+    <hr></hr>
+
+    <div class="container-fluid">
+        <h1>Brokers in your branch</h1>
+        {% for d in data%}
+            <div class="card">
+              <h4 class="card-header">{{d.fname}} {{ d.lname }}</h4>
+              <div class="card-body">
+                <h6 class="card-text">ID: {{d.id}}</h6>
+                <h6 class="card-text">Started on: {{d.startdate}}</h6>
+                <h6 class="card-text">Salary: ${{d.salary}}</h6>
+              </div>
+            </div>
+            <hr></hr>
+        {% endfor %}
+        <a href="{{url_for('addbroker')}}" type="button" name="btnbtn" value="addbroker" class="btn btn-outline-success btn-lg btn-block">Add Broker</a>
+        <hr></hr>
+        <a href="{{url_for('updatebroker')}}" type="button" class="btn btn-outline-warning btn-lg btn-block">Update Broker salary</a>
+        <hr></hr>
+        <a href="{{url_for('removebroker')}}" type="button" class="btn btn-outline-danger btn-lg btn-block">Remove Broker</a>
+        <hr></hr>
+      </div>
 
 
 </div>

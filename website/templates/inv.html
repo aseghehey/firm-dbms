@@ -10,12 +10,14 @@
   {% if 'manager' in session.name %}
   <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-success btn-lg btn-block">Add an Investment</a>
   <hr></hr>
+  <a href="{{url_for('removeinv')}}" type="button" class="btn btn-outline-danger btn-lg btn-block">Remove an Investment</a>
+  <hr></hr>
+  {% endif %}
+  {% if 'broker' in session.name %}
   <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-warning btn-lg btn-block">Modify an Investment</a>
   <hr></hr>
-  <a href="{{url_for('invchanges')}}" type="button" class="btn btn-outline-danger btn-lg btn-block">Remove an Investment</a>
-  <hr></hr>
-
   {% endif %}
+
   {% if 'client' in session.name %}
   <form method="POST">
     <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Buy or sell Investments</a>

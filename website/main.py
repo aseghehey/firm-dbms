@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 import dotenv
 from datetime import date
 from decimal import *
+from password_generator import PasswordGenerator
 
 app = Flask(__name__)
 app.config['SECRET_KEY']=os.getenv('secret_key')
@@ -106,17 +107,12 @@ def manager():
     cursor,connection = connectToDB()
     name=displayName(cursor,connection,session['id'],'manager')
     branch=displayBranchByManager(cursor,connection,session['id'])
-    return render_template('manager.html',title="Manager",branch=branch)
-
-@app.route('/brokersmanage')
-def managebroker():
-    cursor,connection = connectToDB()
     res = displayBranchByManager(cursor,connection,session['id'])
     res2 = displayBrokers(cursor, connection, res)
     data = []
     for d in res2:
-        data.append({'fname': d[1], 'lname':d[2], 'startdate':d[4], 'salary': d[5]})
-    return render_template('brokerformanager.html', data=data)
+        data.append({'id': d[0],'fname': d[1], 'lname':d[2], 'startdate':d[4], 'salary': d[5]})
+    return render_template('manager.html',title="Manager",branch=branch, tp=ProfitByBranch(cursor,connection,branch), data=data)
 
 @app.route('/investment', methods=['GET','POST'])
 def investment():
@@ -189,9 +185,90 @@ def invchanges():
 
     return render_template('invchanges.html')
 
+@app.route('/removeinv', methods=['GET','POST'])
+def removeinv():
+    cursor,connection = connectToDB()
+    if request.method == 'POST' and session['name'] == 'manager':
+        IID = request.form.get('invID')
+        if str(IID).isdigit():
+            cursor.execute(f'SELECT * FROM Investment WHERE IID={IID};')
+            if cursor.fetchone():
+                cursor.execute(f'DELETE FROM Investment WHERE IID={IID}')
+                connection.commit()
+                return redirect(url_for('investment'))
+            else:
+                flash('Could not find investment')
+                return redirect(url_for('removeinv'))
+    return render_template('removeinv.html')
+
 @app.route('/broker')
 def broker():
     return render_template('broker.html',title="Broker")
+
+@app.route('/addbroker', methods=['GET', 'POST'])
+def addbroker():
+    cursor,connection = connectToDB()
+    if request.method=='POST':
+        bID = request.form.get('brokerID')
+        fn = request.form.get('brokerfn')
+        ln = request.form.get('brokerln')
+        salary = request.form.get('brokersalary')
+        toAddbID = '5123'+ str(bID)
+        if str(toAddbID).isdigit() and (int(salary)>0) and (len(bID) == 3):
+            cursor.execute(f'select * from brokers where EID = {int(toAddbID)};')
+            if cursor.fetchone():
+                flash('There already exists a broker with the given ID')
+                return redirect(url_for('addbroker'))
+            else:
+                today = date.today()
+                date2add = today.strftime("%Y-%m-%d")
+                branch=displayBranchByManager(cursor,connection,session['id'])
+                pwo = 'kguvreuw'
+                InsertBrokers(cursor,connection, int(toAddbID),fn,ln,str(pwo),date2add,Decimal(salary),branch)
+                return redirect(url_for('manager'))
+        else:
+            flash('Broker ID needs to be an integer, salary cannot be negative and can only give last 3 numbers of Broker ID')
+            return redirect(url_for('addbroker'))
+    return render_template('add_user.html',title='Add a broker')
+
+@app.route('/removebroker', methods=['GET', 'POST'])
+def removebroker():
+    cursor,connection = connectToDB()
+    if request.method == 'POST':
+        bID = request.form.get('brokerID')
+        if str(bID).isdigit():
+            cursor.execute(f'select * from brokers where EID = {int(bID)};')
+            if cursor.fetchone():
+                DeleteBroker(cursor,connection, int(bID))
+                return redirect(url_for('manager'))
+            else:
+                flash('Could not find a broker with the given ID')
+                return redirect(url_for('removebroker'))
+        else:
+            flash('Invalid BrokerID')
+            return redirect(url_for('removebroker'))
+
+    return render_template('remove_user.html')
+    # return render
+
+@app.route('/updatebroker', methods=['GET', 'POST'])
+def updatebroker():
+    cursor,connection = connectToDB()
+    if request.method=='POST':
+        bID = request.form.get('brokerID')
+        newsal = request.form.get('brokersalary')
+        if str(bID).isdigit():
+            cursor.execute(f'select * from brokers where EID = {int(bID)};')
+            if cursor.fetchone() and (int(newsal) > 0):
+                UpdateBrokers(cursor,connection, int(bID), Decimal(newsal))
+                return redirect(url_for('manager'))
+            else:
+                flash('Make sure broker ID exists and new salary is positive!')
+                return redirect(url_for('updatebroker'))
+        else:
+            flash('Make sure Broker ID is integer only')
+            return redirect(url_for('updatebroker'))
+    return render_template('update_user.html')
 
 @app.route('/client')
 def client():
