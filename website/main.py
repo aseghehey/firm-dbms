@@ -280,6 +280,45 @@ def add():
 
     return render_template('add_user.html',title='Add')
 
+@app.route('/sell', methods=['GET','POST'])
+def sell():
+    cursor,connection = connectToDB()
+    if request.method=='POST' and session['name'] == 'client':
+        invType = request.form.get('invType')
+        invName = request.form.get('invName')
+        qty = request.form.get('Quantity')
+        invalidSell = False
+        msg = ''
+        if (PriceFinder(cursor,connection, invType, invName)) is not None:
+            curprice = PriceFinder(cursor,connection,invType,invName)[-1]
+            invID = IIDfinder(cursor,connection,invType,invName)[0]
+            if ExistinHasB(cursor, connection, session['id'],invID):
+                curqty = qtyByCIDandIID(cursor,session['id'],invID)
+                cursor.execute(f"select CurrentAmount from Clients WHERE ClientID={session['id']}")
+                curamnt = cursor.fetchone()[0]
+                newamnt = ((int(curprice) * int(qty)) + int(curamnt))
+                if (int(curqty) - int(qty) >= 1): # update
+                    if UpdateQuantityNoPriceChange(cursor,connection, session['id'],invID,(int(curqty) - int(qty))) and UpdateCurAmnt(cursor,connection,session['id'],Decimal(newamnt)):
+                        return redirect(url_for('client'))
+                elif (int(curqty) - int(qty) == 0): # delete
+                    if DeleteHasBought(cursor,connection,session['id'], invID) and UpdateCurAmnt(cursor,connection,session['id'],Decimal(newamnt)):
+                        return redirect(url_for('client'))
+                else: # negative
+                    invalidSell = True
+                    msg='Invalid quantity. Make sure you input a quantity below or equal to how much you currently own'
+            else:
+                invalidSell = True
+                msg= 'You do not own this investment'
+        else:
+            invalidSell = True
+            msg= 'This investment doesnt exist'
+
+        if invalidSell:
+            flash(msg)
+            return redirect(url_for('sell'))
+
+    return render_template('sellinv.html', title='Sell')
+    
 @app.route('/remove', methods=['GET', 'POST'])
 def remove():
     cursor,connection = connectToDB()
@@ -336,7 +375,7 @@ def client():
         for d in data:
             vals.append({'invName': d[0], 'invType':d[1], 'price':d[2], 'quantity': d[4],'date':d[3]})
     data2 = clientProfile(cursor,connection,session['username'])
-    profile = {'profit': abs(data2[0]-data2[1]), 'balance': data2[1], 'address': data2[2], 'number': data2[3], 'broker': data2[-1]}
+    profile = {'profit': (data2[1])-(data2[0]), 'balance': data2[1], 'address': data2[2], 'number': data2[3], 'broker': data2[-1]}
     return render_template('client.html',title="Client",vals=vals,profile=profile)
 
 if __name__ == "__main__":

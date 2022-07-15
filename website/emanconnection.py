@@ -65,9 +65,34 @@ def ExistinHasB(cursor,connection,CID,IID):
     else:
         return False
 
+def UpdateCurAmnt(cursor,connection,CID, amnt):
+    try:
+        cursor.execute(f"UPDATE Clients SET CurrentAmount = {amnt} WHERE ClientID = {CID};")
+        connection.commit()
+        return True
+    except mysql.connector.Error:
+        return False
+
 def UpdateQuantity(cursor, connection, ClientID, InvestmentID, Quantity,price):
     cursor.execute(f"UPDATE hasbought set quantity={Quantity},price={price} where ClientID = {ClientID} AND InvestmentID ={InvestmentID};")
     connection.commit()
+
+def DeleteHasBought(cursor,connection,CID, IID):
+    try:
+        cursor.execute(f"DELETE FROM HasBought WHERE ClientID={CID} AND InvestmentID={IID};")
+        connection.commit()
+        return True
+    except mysql.connector.Error:
+        return False
+
+
+def UpdateQuantityNoPriceChange(cursor, connection, ClientID, InvestmentID, Quantity):
+    try:
+        cursor.execute(f"UPDATE hasbought set quantity={Quantity} where ClientID = {ClientID} AND InvestmentID ={InvestmentID};")
+        connection.commit()
+        return True
+    except mysql.connector.Error:
+        return False
 
 def displayLocations(cursor,connection):
     cursor.execute("SELECT Location FROM Branches;")

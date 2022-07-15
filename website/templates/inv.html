@@ -20,9 +20,14 @@
 
   {% if 'client' in session.name %}
   <form method="POST">
-    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-success btn-lg btn-block" value="purchase">Buy or sell Investments</a>
+    <a href="{{url_for('invchanges')}}" type="submit" name="submitbtn" class="btn btn-outline-success btn-lg btn-block" value="purchase">Buy Investments</a>
   </form> 
   <hr></hr>
+  <form method="POST">
+    <a href="{{url_for('sell')}}" type="submit" name="submitbtn" class="btn btn-outline-success btn-lg btn-block" value="purchase">Sell Investments</a>
+  </form> 
+  <hr></hr>
+
   {% endif %}
 
     <div class="row">
