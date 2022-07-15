@@ -23,12 +23,7 @@
 > ![Home](screenshots/regularview/Homepage.png)
 > ![Login](screenshots/Login.png)
 > ![Investment page](screenshots/regularview/InvPage.png)
-> Manager page
-> ![managerpage](screenshots/manager/Managerpage.png)
-> Client page
-> ![clientpage](screenshots/client/Clientpage.png)
-> Broker page
-> ![brokerpage](screenshots/broker/Brokermainpage.png)
+
 > More at [screenshots](screenshots)
 
 ## Usability
