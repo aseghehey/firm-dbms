@@ -20,8 +20,11 @@
 > Used Python on the backend.
 
 ## Screenshots
+> ![Home](screenshots/regularview/Homepage.png)
 > ![Login](screenshots/Login.png)
-> ![Home](screenshots/Regular view/Homepage.png)
+> ![Investment page](screenshots/regularview/InvPage.png)
+
+##### Manager page
 
 ## Installation
 
