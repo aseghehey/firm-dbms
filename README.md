@@ -34,3 +34,8 @@
 ## Usability
 
 > Feel free to use the code with your own database. Our SQL statements to make and populate the database can be found here [Database](https://github.com/easeghehey/Firm-DBMS/blob/main/sql%20statements/allinone)
+
+> Make sure to star this repo if you like it! :)
+
+<h3 align="left">Support:</h3>
+<p><a href="https://www.buymeacoffee.com/emanuelase"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="emanuelase" /></a></p><br><br>
