@@ -36,7 +36,7 @@
             <div class="card-body">
               <h4 class="card-title" name="iName">{{ inv.invName }}</h4>
               <h5 class="card-subtitle mb-2 text-muted" name="iType">{{ inv.invType }}</h5>
-              {% if not 'client' in session.name %}
+              {% if 'manager' in session.name or 'broker' in session.name %}
               <h6 class="card-text" name="iID"> Investment ID: {{ inv.invID }}</h6>
               {% endif %}
               <h6 class="card-text" name="iRA"> Risk Assessment: {{ inv.invRA }}</h6>
