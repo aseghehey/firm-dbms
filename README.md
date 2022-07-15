@@ -24,12 +24,12 @@
 > ![Login](screenshots/Login.png)
 > ![Investment page](screenshots/regularview/InvPage.png)
 > Manager page
-> ![managerpage](screenshots/manager/Manager page.png)
-> ![addinv](screenshots/manager/add inv.png)
+> ![managerpage](screenshots/manager/Managerpage.png)
 > Client page
-> ![clientpage](screenshots/client/Client page.png)
+> ![clientpage](screenshots/client/Clientpage.png)
 > Broker page
-> ![brokerpage](screenshots/broker/Broker main page.png)
+> ![brokerpage](screenshots/broker/Brokermainpage.png)
+> More at [screenshots](screenshots)
 
 ## Usability
 
