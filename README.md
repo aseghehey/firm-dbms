@@ -23,14 +23,14 @@
 > ![Home](screenshots/regularview/Homepage.png)
 > ![Login](screenshots/Login.png)
 > ![Investment page](screenshots/regularview/InvPage.png)
-> Manager page
-> ![managerpage](screenshots/manager/Manager page.png)
-> ![addinv](screenshots/manager/add inv.png)
-> Client page
-> ![clientpage](screenshots/client/Client page.png)
-> Broker page
-> ![brokerpage](screenshots/broker/Broker main page.png)
+
+> More at [screenshots](screenshots)
 
 ## Usability
 
 > Feel free to use the code with your own database. Our SQL statements to make and populate the database can be found here [Database](https://github.com/easeghehey/Firm-DBMS/blob/main/sql%20statements/allinone)
+
+> Make sure to star this repo if you like it! :)
+
+<h3 align="left">Support:</h3>
+<p><a href="https://www.buymeacoffee.com/emanuelase"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="emanuelase" /></a></p><br><br>
