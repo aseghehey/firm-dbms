@@ -9,15 +9,9 @@
 
 ## Features
 > Has session management, which allows access to managers, brokers and clients, each having different views and roles.
-
-## Managers
-> Managers manage their branch (hiring or firing brokers) and can add or remove Investments.
-
-
-## Brokers
->
-
-##Clients
+> Managers not only manage their branch (hire or fire brokers who work under them) but can also add and remove Investments.
+> Brokers manage their clients and are tasked with updating the price of Investments, as they are dynamic.
+> Clients can purchase and sell stocks. Whatever transaction they perform reflects instantly on their account.
 
 ## Technologies
 
@@ -25,6 +19,9 @@
 > Integrated Flask to make the web application, along with HTML and CSS.
 > Used Python on the backend.
 
+## Screenshots
+> ![Login](screenshots/Login.png)
+> ![Home](screenshots/Regular view/Homepage.png)
 
 ## Installation
 
