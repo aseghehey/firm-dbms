@@ -32,5 +32,9 @@
 
 > Make sure to star this repo if you like it! :)
 
-<h3 align="left">Support:</h3>
+<h3 align="left">Support Emanuel:</h3>
 <p><a href="https://www.buymeacoffee.com/emanuelase"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="emanuelase" /></a></p><br><br>
+
+<h3 align="left">Support Pratul:</h3>
+<p><a href="https://www.buymeacoffee.com/pratuln"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="pratuln" /></a></p><br><br>
+
