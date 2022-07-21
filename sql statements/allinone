@@ -236,4 +236,4 @@ insert into HasBought (ClientID, InvestmentID, Price, DateBought, Quantity) valu
 insert into HasBought (ClientID, InvestmentID, Price, DateBought, Quantity) values (2100250, 00054311299, 60000.00, '2021-09-01', 6);
 
 CREATE VIEW CustomerView(FirstName, LastName, InitialAmount, CurrentAmount, TelephoneNumber, Address, BrokerName) AS SELECT FirstName, LastName, InitialAmount, CurrentAmount,TelephoneNumber,Address, last_name FROM Clients C, Brokers B WHERE C.Broker = B.EID;
-CREATE VIEW TopBrokers(BID, FirstName,LastName, BranchID, TotalEarnings) AS SELECT B.EID, B.first_name, B.last_name, Branch, (SUM(CurrentAmount)-SUM(InitialAmount)) FROM Brokers B, Clients C WHERE B.EID = C.Broker GROUP BY EID ORDER BY `(SUM(CurrentAmount)-SUM(InitialAmount))` DESC LIMIT 5;
+CREATE VIEW TopBrokers(EID, FirstName,LastName, BranchID, TotalEarnings) AS SELECT B.EID, B.first_name, B.last_name, Branch, (SUM(CurrentAmount)-SUM(InitialAmount)) FROM Brokers B, Clients C WHERE B.EID = C.Broker GROUP BY EID ORDER BY `(SUM(CurrentAmount)-SUM(InitialAmount))` DESC LIMIT 5;
